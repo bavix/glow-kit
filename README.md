@@ -32,9 +32,12 @@ The library implements simple algorithms for working with images.
 #### Fit Image
 
 ```php
-$fitAdapter = new \Bavix\Glow\Adapters\Fit(\Intervention\Image\ImageManagerStatic::getManager());
-$image = \Intervention\Image\ImageManagerStatic::make(__DIR__ . '/image.jpg');
-$result = $fitAdapter->apply($image, [
+use Intervention\Image\ImageManagerStatic;
+use Bavix\Glow\Adapters\Fit;
+
+$adapter = new Fit(ImageManagerStatic::getManager());
+$image = ImageManagerStatic::make(__DIR__ . '/image.jpg');
+$result = $adapter->apply($image, [
     'width' => '300',
     'height' => '300',
 ]);
@@ -45,9 +48,28 @@ $result->save(__DIR__ . '/output.jpg');
 #### Contain Image
 
 ```php
-$fitAdapter = new \Bavix\Glow\Adapters\Contain(\Intervention\Image\ImageManagerStatic::getManager());
-$image = \Intervention\Image\ImageManagerStatic::make(__DIR__ . '/image.jpg');
-$result = $fitAdapter->apply($image, [
+use Intervention\Image\ImageManagerStatic;
+use Bavix\Glow\Adapters\Contain;
+
+$adapter = new Contain(ImageManagerStatic::getManager());
+$image = ImageManagerStatic::make(__DIR__ . '/image.jpg');
+$result = $adapter->apply($image, [
+    'width' => '300',
+    'height' => '300',
+]);
+
+$result->save(__DIR__ . '/output.jpg');
+```
+
+#### Cover Image
+
+```php
+use Intervention\Image\ImageManagerStatic;
+use Bavix\Glow\Adapters\Cover;
+
+$adapter = new Cover(ImageManagerStatic::getManager());
+$image = ImageManagerStatic::make(__DIR__ . '/image.jpg');
+$result = $adapter->apply($image, [
     'width' => '300',
     'height' => '300',
 ]);
