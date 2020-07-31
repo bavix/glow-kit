@@ -1,9 +1,8 @@
 {
   "name": "bavix/glow-kit",
-  "description": "A set for working with an image in laravel",
+  "description": "A set for working with an image",
   "license": "MIT",
   "keywords": [
-    "laravel",
     "image",
     "crop",
     "resize",
