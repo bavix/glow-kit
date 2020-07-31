@@ -1,0 +1,28 @@
+{
+  "name": "bavix/glow-kit",
+  "description": "A set for working with an image in laravel",
+  "license": "MIT",
+  "keywords": [
+    "laravel",
+    "image",
+    "crop",
+    "resize",
+    "webp",
+    "packed"
+  ],
+  "authors": [
+    {
+      "name": "Babichev Maxim",
+      "email": "info@babichev.net"
+    }
+  ],
+  "require": {
+    "php": "^7.3",
+    "intervention/image": "^2.5"
+  },
+  "autoload": {
+    "psr-4": {
+      "Bavix\\Glow\\": "src/"
+    }
+  }
+}
