@@ -95,15 +95,13 @@ abstract class Adapter implements DriverInterface
 
         $image->resizeCanvas($width, $height, 'center', false, $color);
 
-        $fill = $this->imageManager->canvas($width, $height, $color);
+        $canvas = $this->imageManager->canvas($width, $height, $color);
 
         if ($image->getDriver() instanceof \Intervention\Image\Gd\Driver) {
-            $object = $fill;
-            $fill = $image;
-            $image = $object;
+            [$canvas, $image] = [$image, $canvas];
         }
 
-        return $fill->fill(
+        return $canvas->fill(
             $image,
             $data['shifted']['width'] ?? null,
             $data['shifted']['height'] ?? null,

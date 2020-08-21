@@ -31,7 +31,7 @@ class None extends Adapter
         }
 
         $color = $data['color'] ?? null;
-        $fill = $this->imageManager->canvas($width, $height, $color);
+        $canvas = $this->imageManager->canvas($width, $height, $color);
 
         $image->resizeCanvas(
             $width,
@@ -41,13 +41,13 @@ class None extends Adapter
             $color
         );
 
-        $fill->fill(
+        $canvas->fill(
             $image,
-            ($fill->width() - $image->width()) / 2,
-            ($fill->height() - $image->height()) / 2,
+            ($canvas->width() - $image->width()) / 2,
+            ($canvas->height() - $image->height()) / 2,
         );
 
-        return $fill;
+        return $canvas;
     }
 
 }
