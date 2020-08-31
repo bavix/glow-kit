@@ -2,14 +2,14 @@ build:
   dependencies:
     override:
       - composer install
+    before:
+      - sudo apt-get -y install libmagickwand-dev libmagickcore-dev
+      - printf "\n" | pecl install imagick
+      - sed -i 's/extension="imagick.so"//g' `php --ini | grep "Loaded Configuration" | sed -e "s|.*:\s*||"`
 
   environment:
     php:
       version: 7.3
-      pecl_extensions:
-        - memcached
-        - imagick
-    memcached: true
 
   nodes:
     analysis:
