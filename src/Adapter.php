@@ -40,6 +40,7 @@ abstract class Adapter implements DriverInterface
      * @param Image $image
      * @param array $data
      * @return Image
+     * @codeCoverageIgnore
      */
     protected function beforeHandle(Image $image, array $data): Image
     {
