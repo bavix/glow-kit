@@ -8,6 +8,7 @@ build:
       version: 7.3
       pecl_extensions:
         - memcached
+        - imagick
     memcached: true
 
   nodes:
