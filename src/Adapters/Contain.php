@@ -2,27 +2,22 @@
 
 namespace Bavix\Glow\Adapters;
 
-use Bavix\Glow\Adapter;
 use Intervention\Image\Image;
+use Intervention\Image\Constraint;
 
-class Contain extends Adapter
+class Contain extends ScaleDown
 {
 
     /**
-     * @param array $data
-     *
      * @param Image $image
+     * @param array $data
      * @return Image
      */
-    public function apply(Image $image, array $data): Image
+    protected function handle(Image $image, array $data): Image
     {
-        $sizes = $this->received($image, $data, false);
-
-        return $this->handler(
-            $image,
-            $sizes,
-            $data['color'] ?? null
-        );
+        return $image->resize($data['width'], $data['height'], static function (Constraint $constraint) {
+            $constraint->aspectRatio();
+        });
     }
 
 }

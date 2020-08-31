@@ -24,10 +24,10 @@ glow-kit - A set for working with an image.
 ### Get started
 
 The library implements simple algorithms for working with images.
-- fit
-- none
-- contain
-- cover
+- Scale Down
+- Contain
+- Cover
+- Fit
 
 #### Fit Image
 

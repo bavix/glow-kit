@@ -1,3 +1,7 @@
 composer.phar
 /vendor/
 .idea/
+.phpunit.result.cache
+demo/outputs/*.jpg
+build/
+composer.lock
