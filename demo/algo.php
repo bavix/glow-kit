@@ -9,7 +9,7 @@ use Intervention\Image\ImageManager;
 
 include_once dirname(__DIR__) . '/vendor/autoload.php';
 
-$drivers = [/*'gd', */'imagick'];
+$drivers = ['gd']; // , 'imagick'];
 $classes = [
     'contain' => Contain::class,
     'scale' => ScaleDown::class,
@@ -47,14 +47,14 @@ foreach ($drivers as $driver) {
          */
         $adapter = new $class($imageManager);
         foreach ($paths as $path) {
-            if ($class === Cover::class) {
-                if (empty($variable['width']) || empty($variable['height'])) {
-                    continue;
-                }
-            }
-
             $image = $imageManager->make($path);
             foreach ($variables as $variable) {
+                if ($class === Cover::class || $class === Fit::class) {
+                    if (empty($variable['width']) || empty($variable['height'])) {
+                        continue;
+                    }
+                }
+
                 $result = $adapter->apply($image, $variable);
                 $pathName = \sprintf('%s:%s_%dx%d_%s', $driver, $name, (int)$variable['width'], (int)$variable['height'], basename($path));
                 $result->save(__DIR__ . '/outputs/' . $pathName);
