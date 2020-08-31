@@ -24,88 +24,47 @@ abstract class Adapter implements DriverInterface
 
     /**
      * @param Image $image
-     * @param array $config
-     * @param bool $minimal
-     *
-     * @return array
+     * @param array $data
+     * @return Image
      */
-    protected function received(Image $image, array $config, $minimal = true): array
+    public function apply(Image $image, array $data): Image
     {
-        $width = (int)($config['width'] ?? 0);
-        $height = (int)($config['height'] ?? 0);
-
-        $shiftWidth = 0;
-        $shiftHeight = 0;
-
-        $_width = $width;
-        $_height = $height;
-
-        if ($image->height() < $image->width()) {
-            $_height = $image->height() * $width / $image->width();
-            $shiftHeight = ($_height - $height) / 2;
-        } else {
-            $_width = $image->width() * $height / $image->height();
-            $shiftWidth = ($_width - $width) / 2;
-        }
-
-        if ($minimal ^ $_width > $width) {
-            $_height = $_height * $width / $_width;
-            $_width = $width;
-        }
-
-        if ($minimal ^ $_height > $height) {
-            $_width = $_width * $height / $_height;
-            $_height = $height;
-        }
-
-        return [
-            'config' => [
-                'width' => $width,
-                'height' => $height,
-            ],
-            'received' => [
-                'width' => (int)$_width,
-                'height' => (int)$_height,
-            ],
-            'shifted' => [
-                'width' => (int)$shiftWidth,
-                'height' => (int)$shiftHeight,
-            ]
-        ];
+        $backup = $this->beforeHandle(clone $image, $data);
+        return $this->afterHandle(
+            $this->handle($backup, $data),
+            $data
+        );
     }
 
     /**
      * @param Image $image
      * @param array $data
-     * @param null|string $color
-     *
      * @return Image
      */
-    protected function handler(Image $image, array $data, ?string $color = null): Image
+    protected function beforeHandle(Image $image, array $data): Image
     {
-        $color = $color ?: 'rgba(0, 0, 0, 0)';
-
-        $image->resize(
-            $data['received']['width'] ?? null,
-            $data['received']['height'] ?? null,
-        );
-
-        $width = $data['config']['width'] ?? null;
-        $height = $data['config']['height'] ?? null;
-
-        $image->resizeCanvas($width, $height, 'center', false, $color);
-
-        $canvas = $this->imageManager->canvas($width, $height, $color);
-
-        if ($image->getDriver() instanceof \Intervention\Image\Gd\Driver) {
-            [$canvas, $image] = [$image, $canvas];
+        if (!\function_exists('exif_thumbnail')) {
+            return clone $image;
         }
 
-        return $canvas->fill(
-            $image,
-            $data['shifted']['width'] ?? null,
-            $data['shifted']['height'] ?? null,
-        );
+        return (clone $image)->orientate();
     }
+
+    /**
+     * @param Image $image
+     * @param array $data
+     * @return Image
+     */
+    protected function afterHandle(Image $image, array $data): Image
+    {
+        return $image;
+    }
+
+    /**
+     * @param Image $image
+     * @param array $data
+     * @return Image
+     */
+    abstract protected function handle(Image $image, array $data): Image;
 
 }

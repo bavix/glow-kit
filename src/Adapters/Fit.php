@@ -14,16 +14,18 @@ class Fit extends Adapter
      * @param array $data
      * @return Image
      */
-    public function apply(Image $image, array $data): Image
+    protected function handle(Image $image, array $data): Image
     {
-        $pWidth = $data['width'] ?? null;
-        $pHeight = $data['height'] ?? null;
-        $width = $pWidth >= $pHeight ? $pHeight : null;
-        $height = $pWidth < $pHeight ? $pWidth : null;
-
-        return $image->resize($width, $height, static function (Constraint $constraint) {
-            $constraint->aspectRatio();
-        });
+        return $image->fit(
+            $data['width'],
+            $data['height'],
+            static function (Constraint $constraint) use ($data) {
+                if ($data['upsize'] ?? true) {
+                    $constraint->upsize();
+                }
+            },
+            $data['position'] ?? 'center',
+        );
     }
 
 }
