@@ -17,9 +17,8 @@ build:
       tests:
         override:
         - php-scrutinizer-run
-        - command: vendor/bin/phpunit --dump-xdebug-filter xdebug-filter.php
         -
-          command: vendor/bin/phpunit --prepend xdebug-filter.php --coverage-clover=clover.xml
+          command: php -d zend.enable_gc=0 vendor/bin/phpunit --coverage-clover=clover.xml
           coverage:
             file: clover.xml
             format: php-clover
